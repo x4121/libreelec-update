@@ -8,7 +8,7 @@ VERSION=kodi.version
 
 pushd $DIR >&- 2>&-
 
-CURRENT=`cat $VERSION`
+CURRENT=`cat $VERSION 2>&-`
 NEXT=`curl -sf $URL | tail -2 | head -1 | sed 's/^.*href=\"\(.*\)\".*$/\1/'`
 
 if [ $? != 0 ]; then
