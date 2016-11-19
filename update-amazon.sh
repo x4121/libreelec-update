@@ -22,7 +22,7 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-git submodule update --remote --merge >&- 2>&-
+git submodule update --remote --merge --recursive >&- 2>&-
 CURRENT=`cat $VERSION 2>&-`
 NEXT=`git submodule | grep $SUB | cut -d' ' -f2`
 
