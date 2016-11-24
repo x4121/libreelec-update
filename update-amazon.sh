@@ -12,7 +12,8 @@ KODI=.kodi/addons
 
 pushd $DIR >&- 2>&-
 
-if [ ! `ls $PACKAGES >/dev/null 2>/dev/null` ]; then
+ls $PACKAGES > /dev/null 2> /dev/null
+if [ $? != 0 ]; then
     echo "cloning submodule"
     git submodule update --init --recursive >&- 2>&-
 fi
