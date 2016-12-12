@@ -6,19 +6,19 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 URL=http://milhouse.libreelec.tv/builds/master/RPi2/
 VERSION=kodi.version
 
-pushd $DIR >&- 2>&-
+pushd "$DIR" >&- 2>&-
 
-CURRENT=`cat $VERSION 2>&-`
-NEXT=`curl -sf $URL | tail -2 | head -1 | sed 's/^.*href=\"\(.*\)\".*$/\1/'`
-
-if [ $? != 0 ]; then
+CURRENT=$(ssh $SSH cat $VERSION)
+if ! NEXT=$(curl -sf $URL | tail -2 | head -1 \
+    | sed 's/^.*href=\"\(.*\)\".*$/\1/'); then 
     echo "cannot access $URL"
     exit 1
 fi
-if [ "$CURRENT" != "$NEXT" ]; then
-    ssh $SSH curl -# -o .update/$NEXT $URL$NEXT
+if [[ $CURRENT != "$NEXT" ]]; then
+    # shellcheck disable=2029
+    ssh $SSH "curl -# -o .update/$NEXT $URL$NEXT \
+          && echo $NEXT > $VERSION"
     ssh $SSH '{ sleep 1; reboot; } > /dev/null &'
-    echo $NEXT > $VERSION
 else
     echo "already up to date"
 fi

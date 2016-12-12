@@ -1,3 +1,4 @@
 [submodule "xbmc-amazon"]
 	path = xbmc-amazon
 	url = gh:Sandmann79/xbmc
+    ignore = all
